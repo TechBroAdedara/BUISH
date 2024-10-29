@@ -26,7 +26,7 @@ password_request_form = Annotated[OAuth2PasswordRequestForm, Depends()]
 #---------------------------Routes------------------------
 @auth_router.post("/create_user")
 async def create_user(new_user: UserCreateModel, session: session):
-    hashed_password = bcrypt_context.hash(new_user.password_hash)
+    hashed_password = bcrypt_context.hash(new_user.password)
 
     existing_user = await user_service.get_user_by_email(new_user.email, session)
     print(existing_user)

@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..routes.auth import get_current_user
-from ..schemas.user_schemas import UserCreateModel
 from ..database.main import get_session
 from ..services.userService import UserService
 
