@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class UserCreateModel(BaseModel):
     username: str
     email: str
-    password_hash: str
+    password: str
     address: str
     role: str
     is_verified: bool = False
