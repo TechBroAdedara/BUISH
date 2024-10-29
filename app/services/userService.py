@@ -19,9 +19,9 @@ class UserService:
     async def get_all_user(self, session: AsyncSession):
         statement = select(User).order_by(desc(User.created_at))
 
-        result = await session.execute(statement)
+        results = await session.execute(statement)
 
-        users = result.all()
+        users = results.scalars().all()
         
         return users
 

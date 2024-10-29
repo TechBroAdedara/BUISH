@@ -1,6 +1,5 @@
 from typing import Annotated
 
-from sqlalchemy import select
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,11 +17,11 @@ session = Annotated[AsyncSession, Depends(get_session)]
 @user_router.get("/{id}")
 async def get_user(id, session: session, _: general_user):
     result = await user_service.get_user(id, session)
-    return result
+    return {"user": result}
 
-@user_router.get("/get_all_users")
+
+@user_router.get("/")
 async def get_all_users(session: session, _: general_user):
     result = await user_service.get_all_user(session)
-    return result
-
+    return {"users":result}
 
