@@ -21,6 +21,10 @@ async def get_user(id, session: session, _: general_user):
 
 @user_router.get("/")
 async def get_all_users(session: session, _: general_user):
-    result = await user_service.get_all_user(session)
+    result = await user_service.get_all_users(session)
     return {"users":result}
 
+@user_router.get("/courses/course")
+async def get_user_created_courses(session: session, user: general_user):
+    result = await user_service.get_user_created_courses(user["id"], session)
+    return {f"courses created by {user["username"]}" : result}

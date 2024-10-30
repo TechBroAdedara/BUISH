@@ -73,6 +73,7 @@ async def login_for_access_token(form_data: password_request_form, session: sess
         )
     
     token = create_access_token(
+        id=existing_user.id,
         email= existing_user.email,
         username= existing_user.username,
         role = existing_user.role,

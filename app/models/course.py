@@ -13,8 +13,10 @@ class Course(Base):
     description: Mapped[str] = mapped_column(Text)
     created_by: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-
+    length: Mapped[int] = mapped_column(Integer)
+    category: Mapped[str] = mapped_column(String(255))
+    
     # Relationships
-    teacher = relationship("User", backref="created_courses")
+    teacher = relationship("User", back_populates="created_courses")
     contents = relationship("Content", back_populates="course")
     quiz = relationship("Quiz", back_populates="course")

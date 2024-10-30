@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+
+from .routes.course_router import course_router
 from .database.main import init_db
 from .routes.user_router import user_router
 from .routes.auth import auth_router
@@ -28,3 +30,4 @@ app.add_middleware(
 )
 app.include_router(auth_router)
 app.include_router(user_router)
+app.include_router(course_router)

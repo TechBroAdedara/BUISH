@@ -1,6 +1,6 @@
 from datetime import datetime
 from ..database.db_setup import Base
-from sqlalchemy import TIMESTAMP, DateTime, Enum, Integer, String, Boolean, ForeignKey
+from sqlalchemy import TIMESTAMP, Enum, Integer, String, Boolean
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column, relationship
 
@@ -21,4 +21,4 @@ class User(Base):
 
     # Relationships
     courses = relationship("Enrollment", back_populates="user")
-
+    created_courses = relationship("Course", back_populates="teacher")

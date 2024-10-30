@@ -5,18 +5,27 @@ from ..models import User
 from sqlalchemy import desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import *
+from sqlalchemy.orm import selectinload
 
 
 class UserService:
-    #Create User Service
+    #Create User Service, Used by the auth router
     async def create_user(self, user: UserCreateModel, session: AsyncSession):
         new_user = User(**user.model_dump())
         session.add(new_user)
         await session.commit()
         return new_user
+    
+    #Used for the auth router
+    async def get_user_by_email(self, email:str, session: AsyncSession):
+        stmt = select(User).filter(User.email == email)
+        result = await session.execute(stmt)
 
+        user = result.scalar_one_or_none()
+        return user
+    
     #Get all user service
-    async def get_all_user(self, session: AsyncSession):
+    async def get_all_users(self, session: AsyncSession):
         statement = select(User).order_by(desc(User.created_at))
 
         results = await session.execute(statement)
@@ -39,11 +48,14 @@ class UserService:
             )
         return user
 
-    async def get_user_by_email(self, email:str, session: AsyncSession):
-        stmt = select(User).filter(User.email == email)
+
+    async def get_user_created_courses(self, id:int, session: AsyncSession):
+        stmt = select(User).options(selectinload(User.created_courses)).filter(User.id == id)
         result = await session.execute(stmt)
 
         user = result.scalar_one_or_none()
-        return user
-    
+        courses = user.created_courses 
+
+        return courses
+
 user_service = UserService()
