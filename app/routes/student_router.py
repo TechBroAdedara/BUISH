@@ -10,8 +10,8 @@ from .auth import get_student_user
 from ..database.main import get_session
 
 student_router = APIRouter(prefix="/user/student", tags=["Users/Student"])
-student_user = Annotated[AsyncSession, Depends(get_student_user)]
-Session = Annotated[dict, Depends(get_session)]
+student_user = Annotated[dict, Depends(get_student_user)]
+Session = Annotated[AsyncSession, Depends(get_session)]
 student_service = StudentService()
 
 

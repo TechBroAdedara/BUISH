@@ -46,7 +46,8 @@ async def create_user(new_user: UserCreateModel, session: session):
 
         session.add(user)
         await session.commit()
-        return {"message": "User created successfully"}
+        return {"successfully added": user}
+    
     except Exception as e:
         logging.error(e)
         raise HTTPException(
