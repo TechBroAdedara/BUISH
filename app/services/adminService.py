@@ -8,14 +8,7 @@ from sqlalchemy.future import *
 from sqlalchemy.orm import selectinload
 
 
-class UserService:
-    #Create User Service, Used by the auth router
-    async def create_user(self, user: UserCreateModel, session: AsyncSession):
-        new_user = User(**user.model_dump())
-        session.add(new_user)
-        await session.commit()
-        return new_user
-    
+class AdminService:    
     #Used for the auth router
     async def get_user_by_email(self, email:str, session: AsyncSession):
         stmt = select(User).filter(User.email == email)
@@ -54,8 +47,14 @@ class UserService:
         result = await session.execute(stmt)
 
         user = result.scalar_one_or_none()
+        if not user:
+            raise HTTPException(
+                status_code=404,
+                detail="User Not Found"
+            )
+        
         courses = user.created_courses 
 
         return courses
 
-user_service = UserService()
+user_service = AdminService()

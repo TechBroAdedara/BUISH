@@ -9,13 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..database.main import get_session
 from ..models.user import User
 from ..schemas.user_schemas import UserCreateModel
-from ..services.userService import UserService
+from ..services.adminService import AdminService
 from ..schemas.token_schema import TokenSchema
 from ..utils.access_tokens import create_access_token, decode_token
 
 #---------------------------Dependencies------------------------
 session = Annotated[AsyncSession, Depends(get_session)]
-user_service = UserService()
+user_service = AdminService()
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -85,3 +85,30 @@ async def login_for_access_token(form_data: password_request_form, session: sess
 
 def get_current_user(token:str = Depends(oauth2_bearer)):
     return decode_token(token)
+
+def get_admin_user(token:str = Depends(oauth2_bearer)):
+    user = get_current_user(token)
+    if user["role"] != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Only admins can access this route"
+        )
+    return user
+
+def get_teacher_user(token:str = Depends(oauth2_bearer)):
+    user = get_current_user(token)
+    if user["role"]!= "teacher":
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Only lecturers can access this route"
+        )
+    return user
+
+def get_student_user(token:str = Depends(oauth2_bearer)):
+    user = get_current_user(token)
+    if user["role"] != "student":
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Only students can access this route"
+        )
+    return user

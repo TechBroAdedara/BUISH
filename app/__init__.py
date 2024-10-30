@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
+from .routes.student_router import student_router
+
 from .routes.course_router import course_router
 from .database.main import init_db
-from .routes.user_router import user_router
+from .routes.admin_router import admin_router
 from .routes.auth import auth_router
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -29,5 +31,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(auth_router)
-app.include_router(user_router)
+app.include_router(admin_router)
+app.include_router(student_router)
 app.include_router(course_router)
