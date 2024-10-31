@@ -1,12 +1,10 @@
 from fastapi import HTTPException
 
+from ..models.content import Content
 from ..models.course import Course
 
 from ..schemas.course_schema import CourseCreate, CourseUpdate
-from ..schemas.user_schemas import UserCreateModel
-from ..models import User
 
-from sqlalchemy import desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import *
 
@@ -19,7 +17,7 @@ class CourseService:
         if not course:
             raise HTTPException(status_code=404, detail="Course not found")
         
-        return {"course" :course}
+        return course
     
 
     async def create_course(self, user_id:int , course:CourseCreate, session: AsyncSession):
@@ -39,14 +37,14 @@ class CourseService:
             description=course.description,
             length=course.length,
             category= course.category
-
         )
         new_course.created_by = user_id
 
         session.add(new_course)
         await session.commit()
 
-        return {"message": "Course created successfully"}
+        return {"message": "Course created successfully",
+                "course": new_course}
 
     async def update_course(self, course_id: int, course: CourseUpdate, session: AsyncSession):
         pass
@@ -59,7 +57,13 @@ class CourseService:
         result = await session.execute(stmt)
         courses = result.scalars().all()
 
-        return {f"{category} courses": courses}
+        return courses
 
     async def get_course_content(self, course_id: int, session: AsyncSession):
-        pass
+        stmt = select(Content).filter(Content.course_id== course_id)
+        course_content = (
+            await session.execute(stmt)
+            ).scalars().all()
+        
+
+        return course_content

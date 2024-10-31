@@ -46,7 +46,7 @@ async def create_user(new_user: UserCreateModel, session: session):
 
         session.add(user)
         await session.commit()
-        return {"successfully added": user}
+        return {"message": "successfully added user"}
     
     except Exception as e:
         logging.error(e)
@@ -82,7 +82,8 @@ async def login_for_access_token(form_data: password_request_form, session: sess
         expires_delta=timedelta(minutes=20)
     )
 
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token, 
+            "token_type": "bearer"}
 
 def get_current_user(token:str = Depends(oauth2_bearer)):
     return decode_token(token)

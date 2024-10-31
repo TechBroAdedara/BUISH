@@ -43,7 +43,7 @@ class StudentService:
             )
         
     async def get_enrolled_courses(self, user_id: int, session: AsyncSession):
-        stmt = select(Enrollment, Course).join(Course).join(User).filter(User.id == user_id)  # Replace 1 with user_id
+        stmt = select(Enrollment, Course).join(Course).filter(User.id == user_id)  
         enrolled_courses = await session.execute(stmt)
         result = enrolled_courses.scalars().all()
         return result
