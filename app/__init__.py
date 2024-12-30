@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from .routes.student_router import student_router
+from .routers.student_router import student_router
 
-from .routes.course_router import course_router
+from .routers.course_router import course_router
 from .database.main import init_db
-from .routes.admin_router import admin_router
-from .routes.auth import auth_router
+from .routers.admin_router import admin_router
+from .routers.auth import auth_router
 from fastapi.middleware.cors import CORSMiddleware
 
 @asynccontextmanager
