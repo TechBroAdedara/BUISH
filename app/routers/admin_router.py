@@ -13,7 +13,7 @@ user_service = AdminService()
 Session = Annotated[AsyncSession, Depends(get_session)]
 
 
-@admin_router.get("/{id}")
+@admin_router.get("/get_users/{id}")
 async def get_user(id, session: Session, _: admin_user):
     """ACCESS: ADMIN.
     Gets details of a user by id"""
@@ -21,16 +21,16 @@ async def get_user(id, session: Session, _: admin_user):
     return {"user": result}
 
 
-@admin_router.get("/")
+@admin_router.get("/get_users")
 async def get_all_users(session: Session, _: admin_user):
     """ACCESS: ADMIN.
     Gets details of all users"""
     result = await user_service.get_all_users(session)
     return {"users":result}
 
-@admin_router.get("/courses/all/{id}")
-async def get_user_created_courses(id:int, session: Session, user: admin_user):
+@admin_router.get("/courses/by/{email}")
+async def get_user_created_courses(email:str, session: Session, user: admin_user):
     """ACCESS: ADMIN.
     Gets courses created by a specific user"""
-    result = await user_service.get_user_created_courses(id, session)
+    result = await user_service.get_user_created_courses(email, session)
     return {f"courses created by {user['username']}" : result}

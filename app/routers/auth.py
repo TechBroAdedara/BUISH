@@ -29,7 +29,6 @@ async def create_user(new_user: UserCreateModel, session: session):
     hashed_password = bcrypt_context.hash(new_user.password)
 
     existing_user = await user_service.get_user_by_email(new_user.email, session)
-    print(existing_user)
     if existing_user:
         raise HTTPException(
             status_code= 400,
@@ -79,7 +78,7 @@ async def login_for_access_token(form_data: password_request_form, session: sess
         username= existing_user.username,
         role = existing_user.role,
         is_verified= existing_user.is_verified,
-        expires_delta=timedelta(minutes=20)
+        expires_delta=timedelta(hours=20)
     )
 
     return {"access_token": token, 

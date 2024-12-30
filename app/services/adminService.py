@@ -42,8 +42,8 @@ class AdminService:
         return user
 
 
-    async def get_user_created_courses(self, id:int, session: AsyncSession):
-        stmt = select(User).options(selectinload(User.created_courses)).filter(User.id == id)
+    async def get_user_created_courses(self, email:str, session: AsyncSession):
+        stmt = select(User).options(selectinload(User.created_courses)).filter(User.email == email)
         result = await session.execute(stmt)
 
         user = result.scalar_one_or_none()
