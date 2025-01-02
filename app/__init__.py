@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
+from app.routers import teacher_router
+
 from .routers.student_router import student_router
 
 from .routers.course_router import course_router
@@ -32,5 +34,6 @@ app.add_middleware(
 )
 app.include_router(auth_router)
 app.include_router(admin_router)
+app.include_router(teacher_router)
 app.include_router(student_router)
 app.include_router(course_router)
