@@ -21,4 +21,4 @@ async def get_my_courses(session: Session, user: teacher_user):
     Gets courses created by teacher"""
     user_service = AdminService()
     result = await user_service.get_user_created_courses(user["email"], session)
-    return {f"courses created by {user['username']}" : result}
+    return result
