@@ -37,8 +37,8 @@ async def get_course(id, session:Session, _:general_user):
 
 
 @course_router.get("/all")
-async def get_all_courses():
-    return await course_service.get_all_courses()
+async def get_all_courses(session: Session):
+    return await course_service.get_all_courses(session)
 
 @course_router.get("/all/{category}")
 async def get_course_by_category(category, session: Session, _:general_user):
