@@ -19,7 +19,12 @@ class CourseService:
         
         return course
     
+    async def get_all_courses(self, session: AsyncSession):
+        stmt = select(Course)
+        result = await session.execute(stmt)
+        courses = result.scalars().all()
 
+        return courses
     async def create_course(self, user_id:int , course:CourseCreate, session: AsyncSession):
         
         stmt = select(Course).filter(Course.title == course.title)
@@ -36,9 +41,10 @@ class CourseService:
             title=course.title,
             description=course.description,
             length=course.length,
-            category= course.category
+            category= course.category,
+            image_url = course.image_url,
+            created_by = user_id
         )
-        new_course.created_by = user_id
 
         session.add(new_course)
         await session.commit()

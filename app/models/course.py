@@ -14,6 +14,7 @@ class Course(Base):
     created_by: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     length: Mapped[int] = mapped_column(Integer)
+    image_url: Mapped[str] = mapped_column(String(255))
     category: Mapped[str] = mapped_column(String(255))
     
     # Relationships
